@@ -72,8 +72,8 @@ class DatabaseManager:
     async def update_data(
         self,
         table: str,
-        where: dict[str, Any] | BaseModel,
-        upd_data: dict[str, Any] | BaseModel
+        where: dict[str, Any] | BaseModel = {},
+        upd_data: dict[str, Any] | BaseModel = {}
     ) -> Record:
         db = self.conn
         where = self.__mtd(where)
@@ -97,7 +97,12 @@ class DatabaseManager:
         res = await db.fetch_all(sql, query_data)
         return res
 
-    async def get_data_all(self, table: str, where: dict[str, Any] | BaseModel, order_by: List[str] = []) -> List[Record]:
+    async def get_data_all(
+        self,
+        table: str,
+        where: dict[str, Any] | BaseModel = {},
+        order_by: List[str] = []
+    ) -> List[Record]:
         db = self.conn
         where = self.__mtd(where)
         where_query = await self.__format_extra_opts(
@@ -139,7 +144,11 @@ class DatabaseManager:
 
         return res
 
-    async def exists_data(self, table: str, where: dict[str, Any] | BaseModel) -> bool:
+    async def exists_data(
+        self,
+        table: str,
+        where: dict[str, Any] | BaseModel = {}
+    ) -> bool:
         db = self.conn
         where = self.__mtd(where)
         where_query = await self.__format_extra_opts(
@@ -158,7 +167,11 @@ class DatabaseManager:
 
         return dict(res).get('exists')
 
-    async def delete_data(self, table: str, where: dict[str, Any] | BaseModel):
+    async def delete_data(
+        self,
+        table: str,
+        where: dict[str, Any] | BaseModel = {}
+    ):
         db = self.conn
         where = self.__mtd(where)
         where_query = await self.__format_extra_opts(
