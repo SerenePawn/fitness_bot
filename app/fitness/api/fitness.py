@@ -223,7 +223,6 @@ async def send_notify(state: State):
         await asyncio.sleep(
             await check_time_to_sleep(hour, minute)
         )
-        print('!!!!!!!!!!!!!', await check_time_to_sleep(hour, minute))
 
         users = await state.db.get_data_all(
             USERS_T,
@@ -244,6 +243,6 @@ async def check_time_to_sleep(hour: int, minute: int) -> float:
     time_dest = time_now.replace(hour=hour, minute=minute)
 
     if time_dest - time_now < timedelta(0):
-        time_dest.replace(day=time_dest.day + 1)
+        time_dest = time_dest.replace(day=time_dest.day + 1)
 
     return (time_dest - time_now).total_seconds()
