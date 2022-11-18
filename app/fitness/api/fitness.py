@@ -33,7 +33,7 @@ def register_dp_funcs(state: State):
     @state.dp.message_handler(commands=['start'])
     async def send_welcome(message: types.Message):
         lang_code = message.from_user['language_code']
-        user_registered = await state.sq.exists_model(
+        user_registered = await state.db.exists_data(
             USERS_T,
             mdl.UserSearchUpdateModel(id=message.from_id)
         )
@@ -55,7 +55,7 @@ def register_dp_funcs(state: State):
     async def send_wished_weight(message: types.Message):
         from_id = message.from_id
         lang_code = message.from_user['language_code']
-        user_weighing_started = await state.sq.exists_model(
+        user_weighing_started = await state.db.exists_data(
             USERS_T,
             mdl.UserSearchUpdateModel(id=from_id)
         )
@@ -65,7 +65,7 @@ def register_dp_funcs(state: State):
             )
             return
 
-        await state.sq.insert_model(
+        await state.db.insert_data(
             USERS_T,
             mdl.UserModel(
                 id=from_id,
@@ -81,12 +81,12 @@ def register_dp_funcs(state: State):
 
     @state.dp.message_handler(regexp=r'^\d{2,3}, \d{2}\.\d{2}\.\d{4}$')
     async def send_weghing(message: types.Message):
-        model = mdl.UserSearchUpdateModel(id=message.from_id)
-        user = mdl.UserModel(
-            **await state.sq.get_common_model(
+        user = state.db.record_to_mdl(
+            await state.db.get_data(
                 USERS_T,
-                model
-            )
+                mdl.UserSearchUpdateModel(id=message.from_id)
+            ),
+            mdl.UserModel
         )
 
         lang_code = message.from_user['language_code']
@@ -103,7 +103,7 @@ def register_dp_funcs(state: State):
                 await model.delete()
                 return
 
-            await state.sq.insert_model(
+            await state.db.insert_data(
                 WEIGHING_T,
                 mdl.WeighingModel(
                     user_id=user.id,
@@ -112,22 +112,15 @@ def register_dp_funcs(state: State):
                 )
             )
 
-            # await state.sq.update_model(
-            #     USERS_T,
-            #     mdl.UserSearchUpdateModel(
-            #         id=user.id,
-            #         status=UserStatusEnum.IN_PROGRESS
-            #     ),
-            #     exclude_where=['status']
-            # )
-
-            await state.sq.update_record(
+            await state.db.update_data(
                 USERS_T,
-                dict(
+                where=mdl.UserSearchUpdateModel(
                     id=user.id
                 ),
-                status=UserStatusEnum.IN_PROGRESS,
-                id=user.id,
+                upd_data=dict(
+                    status=UserStatusEnum.IN_PROGRESS,
+                    id=user.id
+                )
             )
 
             await message.reply(
@@ -147,7 +140,7 @@ def register_dp_funcs(state: State):
     async def send_schedule(message: types.Message):
         lang_code = message.from_user['language_code']
         from_id = message.from_id
-        weighing = await state.sq.get_common_models(
+        weighing = await state.db.get_data_all(
             WEIGHING_T,
             mdl.WeighingSearchUpdateModel(
                 user_id=from_id
@@ -212,7 +205,7 @@ def register_dp_funcs(state: State):
             return
 
         # execute enum-ed cmd.
-        await AdminCmdsEnum.CMDS[cmd](state.db_mgr, extra)
+        await AdminCmdsEnum.CMDS[cmd](state.db, extra)
         await state.bot.send_message(from_user.id, 'Ok.')
 
 
@@ -232,7 +225,7 @@ async def send_notify(state: State):
         )
         print('!!!!!!!!!!!!!', await check_time_to_sleep(hour, minute))
 
-        users = await state.sq.get_common_models(
+        users = await state.db.get_data_all(
             USERS_T,
             mdl.UserSearchUpdateModel(
                 status=UserStatusEnum.IN_PROGRESS
