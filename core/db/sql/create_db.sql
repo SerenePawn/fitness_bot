@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS "weighing" (
 );
 
 CREATE TABLE IF NOT EXISTS "staff" (
-    "id" SERIAL PRIMARY KEY,
     "user_id" INTEGER NOT NULL UNIQUE,
     "banned" BOOLEAN NOT NULL DEFAULT false,
     "is_staff" BOOLEAN NOT NULL DEFAULT false,
