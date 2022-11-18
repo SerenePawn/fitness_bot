@@ -1,0 +1,16 @@
+{
+    "language": "en",
+    "phrases": {
+        "not_started": "Hey bro u dont even started!",
+        "already_started": "Hey bro dafuq u doin here? U already started!",
+        "start_hello": "Hi, {first_name}!\nIm Fitness (test) Bot!\nSay me ur wished weight.",
+        "please_current_weight": "Please, send me ur current weight and date.\nFor example: \"65, 01.01.2022\".",
+        "send_current_weight": "Ok, we need u to drop to {weight}kg. Now send me ur current weight\nFor example: \"65, 01.01.2022\".",
+        "hooray": "Hooray! U got ur weight achievment. Bye.",
+        "last_weight_was": "Ok, ur last weight {weight}kg was at {date}. Now i'll be annoy u with notifications >:)",
+        "send_wished": "Please, send me ur wished weight firstly.",
+        "your_schedule": "Your weight schedule:\n",
+        "line_schedule": "{weight}kg at {date}\n",
+        "weighting_time": "Its time for weighing! For example \"65, 01.01.2022\"."
+    }
+}
