@@ -1,0 +1,1 @@
+INSERT INTO staff(user_id, is_staff, is_superadmin) VALUES ({user_id}, {is_admin}, {is_superadmin});
