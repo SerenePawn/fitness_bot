@@ -55,7 +55,7 @@ class DatabaseManager:
         db = self.conn
         await db.execute_many(sql, values)
 
-    async def insert_data(self, table: str, data: dict) -> Record:
+    async def insert_data(self, table: str, data: dict | BaseModel) -> Record:
         db = self.conn
         data = self.__mtd(data)
         keys = data.keys()
