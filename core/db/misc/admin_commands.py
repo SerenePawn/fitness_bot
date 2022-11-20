@@ -23,4 +23,7 @@ async def alist(state: State, params: list):
         raise InvalidParams('This func cannot have any params')
 
     result = await state.db.get_data_all(STAFF_T)
-    return result or "Admin list is empty."
+
+    if not result:
+        return "Admin list is empty."
+    return [i.user_id for i in result]
