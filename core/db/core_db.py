@@ -181,19 +181,23 @@ class DatabaseManager:
 
         sql = f'''
             DELETE FROM {table}
-            WHERE {where_query}
+            {where_query}
         '''
 
         await db.fetch_one(sql, where)
 
     @staticmethod
     def record_to_mdl(record: Record, model: BaseModel) -> BaseModel:
+        if not record or not model:
+            return None
         if not issubclass(model, BaseModel):
             raise TypeError
         return model(**record)
 
     @staticmethod
     def record_to_mdls(records: Record, model: BaseModel) -> BaseModel:
+        if not records or not model:
+            return None
         if not issubclass(model, BaseModel):
             raise TypeError
         return [model(**i) for i in records]
