@@ -235,11 +235,12 @@ async def send_notify(state: State):
                 i.id,
                 await state.lang_mgr.load_phrase('weighting_time', i.lang_code)
             )
+        await asyncio.sleep(1)  # Added sleep 1 sec to prevent weghing msg spam
 
 
-async def check_time_to_sleep(hour: int, minute: int) -> float:
+async def check_time_to_sleep(hour: int, minute: int, second: int = 0) -> float:
     time_now = datetime.now()
-    time_dest = time_now.replace(hour=hour, minute=minute)
+    time_dest = time_now.replace(hour=hour, minute=minute, second=second)
 
     if time_dest - time_now < timedelta(0):
         time_dest = time_dest.replace(day=time_dest.day + 1)
