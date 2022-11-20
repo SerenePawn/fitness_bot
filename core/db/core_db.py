@@ -97,6 +97,23 @@ class DatabaseManager:
         res = await db.fetch_all(sql, query_data)
         return res
 
+    async def update_or_create_data(
+        self,
+        table: str,
+        where: dict[str, Any] | BaseModel = {},
+        upd_data: dict[str, Any] | BaseModel = {}
+    ) -> Record:
+        where = self.__mtd(where)
+        upd_data = self.__mtd(upd_data)
+
+        is_exists = await self.exists_data(table, where)
+        if is_exists:
+            res = await self.update_data(table, where, upd_data)
+        else:
+            upd_data.update(where)
+            res = await self.insert_data(table, upd_data)
+        return res
+
     async def get_data_all(
         self,
         table: str,
