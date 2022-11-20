@@ -7,6 +7,7 @@ import asyncio
 from time import time
 
 import core.models.fitness.models as mdl
+from core.models.admin.staff import StaffModel
 from core.enums.enums import UserStatusEnum
 from core.enums.admin import AdminCmdsEnum
 from core.settings import STARTUP_TIME
@@ -189,9 +190,12 @@ def register_dp_funcs(state: State):
         cmd = cmd.lower()
         await message.delete()
 
-        admin_user = await state.db.get_data(STAFF_T, dict(user_id=from_user.id))
+        admin_user: StaffModel = state.db.record_to_mdl(
+            await state.db.get_data(STAFF_T, dict(user_id=from_user.id)),
+            StaffModel
+        )
 
-        if not admin_user or dict(admin_user).get('banned'):
+        if not admin_user or admin_user.banned:
             await state.bot.send_message(
                 from_user.id,
                 'You\'re not an admin.'
