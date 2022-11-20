@@ -1,8 +1,10 @@
 class GovsTypeEnum:
-    STUFF = 'is_stuff'
+    STAFF = 'is_staff'
     ADMIN = 'is_superadmin'
+    BANNED = 'banned'
 
     CHOICES = [
-        STUFF,
-        ADMIN
+        STAFF,
+        ADMIN,
+        BANNED,
     ]

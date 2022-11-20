@@ -189,9 +189,9 @@ def register_dp_funcs(state: State):
         cmd = cmd.lower()
         await message.delete()
 
-        admin_user = state.db.get_data(STAFF_T, dict(user_id=from_user.id))
+        admin_user = await state.db.get_data(STAFF_T, dict(user_id=from_user.id))
 
-        if not admin_user:
+        if not admin_user or dict(admin_user).get('banned'):
             await state.bot.send_message(
                 from_user.id,
                 'You\'re not an admin.'
@@ -204,7 +204,7 @@ def register_dp_funcs(state: State):
             return
 
         # execute enum-ed cmd.
-        res = await AdminCmdsEnum.CMDS[cmd](state, extra)
+        res = await AdminCmdsEnum.CMDS[cmd](state, from_user, extra)
         await state.bot.send_message(from_user.id, res if res else 'Ok.')
 
 
