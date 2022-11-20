@@ -11,14 +11,13 @@ POSTGRES_DB = 'tgbot'
 # notify settings
 # startup = [hour, minute]
 STARTUP_TIME = [
-    11, 30
+    22, 28
 ]
 
 # dialogues settings
 TEMPLATE_FOLDER = 'templates'
 LANG_CODES = ['en', 'ru']
 
-# admin password
-# possibly to make it better with web admin
-ADMIN_USERNAMES_ALLOWED = ['serenepawn']
-ADMIN_PASSWD = '12345'
+MIGRATIONS_FOLDER = 'core/db/migrations'
+SQL_TEMPLATES_FOLDER = 'core/db/sql_templates'
+SQL_TEMPLATES_FOLDER = 'core/db/sql_templates'

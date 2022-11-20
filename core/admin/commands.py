@@ -3,14 +3,14 @@ import logging
 
 from app.fitness.init import init_manage
 from core.app import State
+from core.settings import (
+    MIGRATIONS_FOLDER,
+    SQL_TEMPLATES_FOLDER,
+    SQL_TEMPLATES_FOLDER,
+)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-
-MIGRATIONS_FOLDER = 'core/db/migrations'
-SQL_TEMPLATES_FOLDER = 'core/db/sql_templates'
-SQL_TEMPLATES_FOLDER = 'core/db/sql_templates'
 
 
 async def init_db():
