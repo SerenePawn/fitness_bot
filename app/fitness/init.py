@@ -37,3 +37,9 @@ def init():
     except Exception as e:
         logger.error(f'Fatal error: {e}')
         executor.start(app.dp, app.shutdown())
+
+
+async def init_manage() -> State:
+    app = State(API_TOKEN)
+    await app.init()
+    return app
