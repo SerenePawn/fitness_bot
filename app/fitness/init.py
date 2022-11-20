@@ -33,7 +33,8 @@ def init():
             on_startup=on_startup_bg
         )
     except (GeneratorExit, asyncio.CancelledError):
-        executor.start
+        logger.info(f'App is closing.')
+        executor.start(app.dp, app.shutdown())
     except Exception as e:
         logger.error(f'Fatal error: {e}')
         executor.start(app.dp, app.shutdown())
