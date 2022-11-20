@@ -100,7 +100,8 @@ def register_dp_funcs(state: State):
                 await message.reply(
                     await state.lang_mgr.load_phrase('hooray', lang_code)
                 )
-                await model.delete()
+                await state.db.delete_data(WEIGHING_T, dict(user_id=user.id))
+                await state.db.delete_data(USERS_T, dict(id=user.id))
                 return
 
             await state.db.insert_data(
@@ -182,20 +183,22 @@ def register_dp_funcs(state: State):
 
         await message.reply(result)
 
-    @state.dp.message_handler(commands=['admin'], regexp=r'/admin .+ .+')
+    @state.dp.message_handler(commands=['admin'], regexp=r'/admin .+')
     async def send_admin(message: types.Message):
         """
-        Simple admin panel in text chat.
+        Simple admin panel in bot chat.
         """
         from_user = message.from_user
-        _, passwd, cmd, *extra = message.text.split(' ')
+        _, cmd, *extra = message.text.split(' ')
         cmd = cmd.lower()
         await message.delete()
 
-        if not passwd == ADMIN_PASSWD or from_user.username not in ADMIN_USERNAMES_ALLOWED:  # TODO
+        admin_user = state.db.get_data(STAFF_T, dict(user_id=from_user.id))
+
+        if not admin_user:
             await state.bot.send_message(
                 from_user.id,
-                'Invalid password. If you\'re not an admin, you\'ve been banned after a few attempts.'
+                'You\'re not an admin.'
             )
             return
 
@@ -205,8 +208,8 @@ def register_dp_funcs(state: State):
             return
 
         # execute enum-ed cmd.
-        await AdminCmdsEnum.CMDS[cmd](state.db, extra)
-        await state.bot.send_message(from_user.id, 'Ok.')
+        res = await AdminCmdsEnum.CMDS[cmd](state, extra)
+        await state.bot.send_message(from_user.id, res if res else 'Ok.')
 
 
 async def send_notify(state: State):
