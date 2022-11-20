@@ -9,11 +9,7 @@ from time import time
 import core.models.fitness.models as mdl
 from core.enums.enums import UserStatusEnum
 from core.enums.admin import AdminCmdsEnum
-from core.settings import (
-    STARTUP_TIME,
-    ADMIN_USERNAMES_ALLOWED,
-    ADMIN_PASSWD
-)
+from core.settings import STARTUP_TIME
 from core.app import State
 
 
