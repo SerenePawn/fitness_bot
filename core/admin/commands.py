@@ -53,6 +53,6 @@ def _convert_terminal_bool(item: str):
     """
     Converts terminal bool params to string format SQL
     """
-    if item in ['True', 'true', '1']:
+    if item.lower() in ['true', '1']:
         return 'true'
     return 'false'
