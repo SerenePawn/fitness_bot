@@ -210,12 +210,10 @@ def register_dp_funcs(state: State):
 
 async def send_notify(state: State):
     """
-    Its working worse. Need TODO:
-        - Make asyncio sleep like: 
-            wakeup -> check time is come -> sleep for the time to next wake up
+    Need TODO:
         - Make user's TZ to sync time
-            So to do this need to make list of users who already got msg
-            And save users TZ to db
+            So to do this need to make list of users who already got msg today
+            And save users TZ to db. (I dont think its really necessary)
     """
     hour, minute = STARTUP_TIME
     while True:
