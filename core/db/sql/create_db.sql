@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS "weighing" (
 );
 
 CREATE TABLE IF NOT EXISTS "staff" (
-    "user_id" INTEGER NOT NULL UNIQUE,
+    "user_id" BIGINT NOT NULL UNIQUE,
     "banned" BOOLEAN NOT NULL DEFAULT false,
     "is_staff" BOOLEAN NOT NULL DEFAULT false,
     "is_superadmin" BOOLEAN NOT NULL DEFAULT false
