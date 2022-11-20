@@ -17,7 +17,7 @@ async def init_db():
     """ Initialize db from sql """
     state: State = await init_manage()
     if sys.argv[2:]:
-        print('This func cannot have any params')
+        logger.warning('This func cannot have any params')
         return
     with open(f'{MIGRATIONS_FOLDER}/!init_db.sql') as fd:
         await state.db.execute_many(fd.read())
