@@ -1,4 +1,7 @@
-from core.db.misc.admin_commands import *
+from core.db.misc.admin_commands import (
+    set_govs,
+    alist
+)
 
 
 class AdminCmdsEnum:
